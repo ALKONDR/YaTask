@@ -23,26 +23,46 @@ class TripMaker {
 
 	/* returns object like:
 		{
-			fromLocation1: {to: toLocation1 ...other properties}
-			fromLocation2: {...}
-			.
-			.
-			.
+		fromObject:
+			{
+				fromLocation1: {to: toLocation1 ...other properties}
+				fromLocation2: {...}
+				.
+				.
+				.
+			}
+		toObject:
+			{
+				toLocation1: {from: fromLocation1 ...other properties}
+				toLocation2: {...}
+				.
+				.
+				.
+			}
 		}
 	*/
-	static getFromObject(cards) {
+	static getFromAndToObject(cards) {
 		const fromObject = {};
+		const toObject = {};
 
 		cards.forEach(card => {
 			fromObject[card['from']] = {};
+			toObject[card['to']] = {};
 
 			Object.keys(card).forEach(key => {
 				if (key !== 'from')
 					fromObject[card['from']][key] = card[key];
+
+				if (key !== 'to')
+					toObject[card['to']][key] = card[key];
 			});
 		});
 
-		return fromObject;
+		const finalObject = {};
+		finalObject['fromObject'] = fromObject;
+		finalObject['toObject'] = toObject;
+
+		return finalObject;
 	}
 
 	static getUniqueArray(array) {
@@ -102,6 +122,12 @@ class TripMaker {
 	static createTrip(cards) {
 		if (!TripMaker.checkForValidTrip(cards))
 			throw new Error('It is impossible to make trip with such cards!');
+
+		const finalTrip = []
+		// const fromObject = TripMaker.getFromObject(cards);
+
+		
+
 		return cards;
 	}
 
@@ -109,11 +135,17 @@ class TripMaker {
 		return TripMaker.createTrip(this.tripCards);
 	}
 }
+
 TripMaker.MUST_HAVE_PROPERTIES = ['from', 'to', 'transport'];
 TripMaker.DEFAULT_VALUE_FOR_UNDEFINED = 'not assigned';
+
+
+// *****************************
+// ----------TESTING------------
+// *****************************
 
 const trip = new TripMaker();
 trip.addCard({from: 'Saratov', to: 'Moscow', transport: 'train'});
 trip.addCard({from: 'Moscow', to: 'Odintsovo', transport: 'bus'});
-console.log(TripMaker.getFromObject(trip.tripCards));
+console.log(TripMaker.getFromAndToObject(trip.tripCards));
 console.log(trip.createTrip());
