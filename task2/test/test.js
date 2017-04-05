@@ -59,3 +59,19 @@ describe('MLF', function() {
     });
   });
 });
+
+describe('MLF', function() {
+  describe('toggleClass', function() {
+    it('should remove someClass from the element', function() {
+      assert.equal(first('.someClass').toggleClass('someClass').dom.className, '');
+    });
+  });
+});
+
+describe('MLF', function() {
+  describe('toggleClass', function() {
+    it('should add someClass to the element', function() {
+      assert.equal(first('.anotherClassName').toggleClass('someClass').dom.className, 'anotherClassName someClass');
+    });
+  });
+});
