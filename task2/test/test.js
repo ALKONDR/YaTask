@@ -1,15 +1,3 @@
-// mlfEl.css({
-// 	background: 'yellow',
-// 	height: '100px'
-// });
-
-// mlfEl.addListener('onclick', () => console.log('onclick listener!'));
-
-// const anotherEl = all('.multipleElements');
-// anotherEl.toggleClass('superClass');
-// console.log(anotherEl.dom);
-
-// anotherEl.setText('another text');
 
 const htmlToAdd = `<div class="testClassName"></div> 
 
@@ -72,6 +60,28 @@ describe('MLF', function() {
   describe('toggleClass', function() {
     it('should add someClass to the element', function() {
       assert.equal(first('.anotherClassName').toggleClass('someClass').dom.className, 'anotherClassName someClass');
+    });
+  });
+});
+
+describe('MLF', function() {
+  describe('css', function() {
+    it('should change css properties', function() {
+      const cssProps = {
+        color: 'yellow',
+        height: '100px'
+      };
+      assert.equal(first('.anotherClassName').css(cssProps).dom.style['height'], '100px');
+      assert.equal(first('.anotherClassName').dom.style['color'], 'yellow');
+    });
+  });
+});
+
+describe('MLF', function() {
+  describe('addListener', function() {
+    it('should add onclick listener', function() {
+      const func = () => { console.log('event listener'); };
+      assert.equal(first('.anotherClassName').addListener('onclick', func).dom.onclick, func);
     });
   });
 });
