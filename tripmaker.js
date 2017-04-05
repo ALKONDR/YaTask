@@ -119,16 +119,70 @@ class TripMaker {
 		this.tripCards = [];
 	}
 
+	static getTransitionChain(chain, fromObject) {
+		const transitionChain = [];
+
+		chain.forEach(location => {
+			if (!fromObject[location])
+				return;
+
+			let tmp = {from: location}
+			Object.keys(fromObject[location]).forEach(key => {
+				tmp[key] = fromObject[location][key];
+			});
+
+			transitionChain.push(tmp);
+		});
+
+		return transitionChain;
+	}
+
+	static getStringRepresentation(transitionChain) {
+		const START_PROPERTIES = ['from', 'to', 'transport'];
+
+		let tripString = '';
+
+		transitionChain.forEach(transition => {
+			let currentTransitionString = `Take ${transition.transport} from ${transition.from} to ${transition.to}. `;
+
+			Object.keys(transition).forEach(key => {
+				if (!START_PROPERTIES.includes(key))
+					currentTransitionString += `${key}: ${transition[key]}. `;
+			});
+
+			tripString += currentTransitionString.trim() + '\n';
+		});
+
+		return tripString.trim();
+	}
+
 	static createTrip(cards) {
 		if (!TripMaker.checkForValidTrip(cards))
 			throw new Error('It is impossible to make trip with such cards!');
 
-		const finalTrip = []
-		// const fromObject = TripMaker.getFromObject(cards);
+		const finalTrip = [];
+		const fromAndToObject = TripMaker.getFromAndToObject(cards);
 
-		
+		let firstTransition = undefined;
+		Object.keys(fromAndToObject.toObject).forEach(key => {
+			if (!fromAndToObject.toObject[fromAndToObject.toObject[key]['from']])
+				firstTransition = fromAndToObject.toObject[key]['from'];
+		});
 
-		return cards;
+		finalTrip.push(firstTransition);
+		for (let i = 0; i < Object.keys(fromAndToObject.fromObject).length; i++){
+			finalTrip.push(fromAndToObject.fromObject[finalTrip[i]]['to'])
+		}
+
+		const transitionChain = TripMaker.getTransitionChain(finalTrip, 
+			fromAndToObject.fromObject);
+
+		const tripString = TripMaker.getStringRepresentation(transitionChain);
+
+		return {
+			transitionChain: transitionChain,
+			tripString: tripString
+		};
 	}
 
 	createTrip() {
@@ -145,7 +199,7 @@ TripMaker.DEFAULT_VALUE_FOR_UNDEFINED = 'not assigned';
 // *****************************
 
 const trip = new TripMaker();
-trip.addCard({from: 'Saratov', to: 'Moscow', transport: 'train'});
-trip.addCard({from: 'Moscow', to: 'Odintsovo', transport: 'bus'});
-console.log(TripMaker.getFromAndToObject(trip.tripCards));
+trip.addCard({from: 'Moscow', to: 'Odintsovo', transport: 'bus', seat: 'A78'});
+trip.addCard({from: 'Saratov', to: 'Moscow', transport: 'train', number: '123', seat: 'B12'});
+// console.log(TripMaker.getFromAndToObject(trip.tripCards));
 console.log(trip.createTrip());
