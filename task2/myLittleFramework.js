@@ -1,9 +1,9 @@
 'use strict'
 
 class MLF {
-	constructor(dom, all = false) {
-		this.all = all;
-		this._dom = all ? dom : [dom];
+	constructor(dom) {
+		this.all = dom instanceof NodeList;
+		this._dom = this.all ? dom : [dom];
 	}
 
 	get dom() {
@@ -27,7 +27,7 @@ class MLF {
 			const elementClasses = element.className.split(' ');
 
 			elementClasses.splice(elementClasses.indexOf(className), 1);
-			this.dom.className = elementClasses.join(' ');
+			element.className = elementClasses.join(' ');
 		});
 
 		return this;
@@ -70,11 +70,19 @@ class MLF {
 
 		return this;
 	}
+
+	addListener(listener, func) {
+		Array.prototype.forEach.call(this._dom, element => {
+			element[listener] = func;
+		});
+
+		return this;
+	}
 }
 
 const first = (selector) => new MLF(document.querySelector(selector));
 
-const all = (selector) => new MLF(document.querySelectorAll(selector), true);
+const all = (selector) => new MLF(document.querySelectorAll(selector));
 
 
 
@@ -98,6 +106,8 @@ mlfEl.css({
 	background: 'yellow',
 	height: '100px'
 });
+
+mlfEl.addListener('onclick', () => console.log('onclick listener!'));
 
 const anotherEl = all('.multipleElements');
 anotherEl.toggleClass('superClass');
