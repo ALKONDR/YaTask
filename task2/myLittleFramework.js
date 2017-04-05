@@ -32,12 +32,23 @@ class MLF {
 	}
 
 	toggleClass(className) {
+		if (this.hasClass(className))
+			this.removeClass(className)
+		else
+			this.addClass(className);
 
 		return this;
 	}
 
 	hasClass(className) {
-		return this.dom.className.includes(className);
+		let answer = true;
+		Array.prototype.forEach.call(this._dom, element => {
+			console.log(className);
+			if (!element.className.split(' ').includes(className))
+				answer = false;
+		});
+
+		return answer;
 	}
 
 	css(changes) {
@@ -56,6 +67,7 @@ const all = (selector) => new MLF(document.querySelectorAll(selector), true);
 //--------------------TESTING---------------------
 //************************************************
 
+
 const mlfEl = first('.testClassName').addClass('someClass');
 console.log(mlfEl.dom);
 
@@ -63,8 +75,9 @@ console.log(mlfEl.dom);
 mlfEl.removeClass('testClassName').addClass('oneMoreClass');
 console.log(mlfEl.dom);
 
-// console.log(mlfEl.hasClass('someClass'));
+console.log(mlfEl.hasClass('meClass'));
 
-// const another = all('.multipleElements');
-// another.addClass('superClass');
-// console.log(another.dom);
+const another = all('.multipleElements');
+another.toggleClass('superClass');
+console.log(another.dom);
+
