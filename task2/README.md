@@ -62,7 +62,7 @@ firstElementWithSelector.css({
 	height: '100px'
 });
 ```
-### .addListener(listener, func)
+### .addListener(event, func)
 Добавляет event listener на элемент/элементы
 ```js
 firstElementWithSelector.addListener('onclick', () => console.log('onclick listener!'));

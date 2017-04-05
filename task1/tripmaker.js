@@ -6,7 +6,12 @@ class TripMaker {
 		this.tripCards = [];
 	}
 
-	// method for quick finding intersection in 2 arrays
+	/**
+	 * method for quick finding intersection in 2 arrays
+	 * @param  {[node]} array1 
+	 * @param  {[node]} array2 
+	 * @return {[node]}        [intersection array]
+	 */
 	static findIntersection(array1, array2) {
 
 		// we use this object as hashmap
@@ -46,6 +51,11 @@ class TripMaker {
 			}
 		}
 	*/
+	/**
+	 * building hashmaps with [from] and [to] keys
+	 * @param  {[node]} cards [travel cards]
+	 * @return {[object]}       [object of from-travel cards and to-travel cards]
+	 */
 	static getFromAndToObject(cards) {
 		const fromObject = {};
 		const toObject = {};
@@ -70,10 +80,21 @@ class TripMaker {
 		return finalObject;
 	}
 
+	/**
+	 * e array of unique elements
+	 * @param  {[any]} array
+	 * @return {[same]}       array of unique elements
+	 */
 	static getUniqueArray(array) {
 		return array.filter((value, index) => array.indexOf(value) === index);
 	}
 
+	/**
+	 * return an array of all values belongs to given key
+	 * @param  {[object]} array
+	 * @param  {[object]} key
+	 * @return {[object values]}
+	 */
 	static getValuesOfKey(array, key) {
 		const values = [];
 		array.forEach(element => {
@@ -84,7 +105,11 @@ class TripMaker {
 		return values;
 	}
 
-	// check if we can make valid trip
+	/**
+	 * check if we can make valid trip
+	 * @param  {[object]} cards [travel cards]
+	 * @return {[bool]}       [possibility to make a trip]
+	 */
 	static checkForValidTrip(cards) {
 		// check if all cards have must have properties
 		cards.forEach(card => {
@@ -108,7 +133,11 @@ class TripMaker {
 		return true;
 	}
 
-	// check if all must have properties consists in card
+	/**
+	 * check if all must have properties consists in card
+	 * @param  {[card]} card [travel cards]
+	 * @return {[bool]}      [if the card is valid]
+	 */
 	static checkForValidCard(card) {
 		if (TripMaker.findIntersection(TripMaker.MUST_HAVE_PROPERTIES, Object.keys(card)).length === TripMaker.MUST_HAVE_PROPERTIES.length)
 			return true;
@@ -116,18 +145,29 @@ class TripMaker {
 		return false;;
 	}
 
-	// adds card in all cards object variable
+	/**
+	 * adds card in all cards object variable
+	 * @param {[card]} card [travel card]
+	 */
 	addCard(card) {
 		if(!TripMaker.checkForValidCard(card))
 			throw new Error('Missed some must have properties!');
 		this.tripCards.push(card);
 	}
 
+	/**
+	 * clears all travel cards
+	 */
 	clearTripCards() {
 		this.tripCards = [];
 	}
 
-	// returns the final array of sorted cards
+	/**
+	 * returns the final array of sorted cards
+	 * @param  {[string]} chain      [locations]
+	 * @param  {[object]} fromObject [from-object]
+	 * @return {[array of card]}            [sorted array of travel cards]
+	 */
 	static getTransitionChain(chain, fromObject) {
 		const transitionChain = [];
 
@@ -149,6 +189,11 @@ class TripMaker {
 		return transitionChain;
 	}
 
+	/**
+	 * creates string representation of our trip
+	 * @param  {[object]} transitionChain [sorted travel cards]
+	 * @return {[string]}                 [string representation]
+	 */
 	static getStringRepresentation(transitionChain) {
 		// just properties that we use at the beggining of each string
 		const START_PROPERTIES = ['from', 'to', 'transport'];
@@ -171,6 +216,11 @@ class TripMaker {
 		return tripString.trim();
 	}
 
+	/**
+	 * sorts given travel cards
+	 * @param  {[array of cards]} cards [shuffled travel cards]
+	 * @return {[object two objects]}       [sorted cards and string representation of our travel]
+	 */
 	static createTrip(cards) {
 		// let first check if all cards are valid and if we can make a trip with them
 		if (!TripMaker.checkForValidTrip(cards))
