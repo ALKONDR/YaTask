@@ -1,0 +1,31 @@
+{
+  "name": "mylittleframework",
+  "version": "0.0.1",
+  "description": "Yandex Internship task",
+  "main": "js/myLittleFramework",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "karma start karma.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ALKONDR/YaTask.git"
+  },
+  "author": "Alexander Kondrashkin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ALKONDR/YaTask/issues"
+  },
+  "homepage": "https://github.com/ALKONDR/YaTask#readme",
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.1.3",
+    "eslint-plugin-import": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "karma": "^1.6.0",
+    "mocha": "^3.2.0"
+  }
+}
