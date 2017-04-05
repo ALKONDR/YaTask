@@ -1,3 +1,5 @@
+'use strict'
+
 class MLF {
 	constructor(dom, all = false) {
 		this.all = all;
@@ -42,8 +44,8 @@ class MLF {
 
 	hasClass(className) {
 		let answer = true;
+
 		Array.prototype.forEach.call(this._dom, element => {
-			console.log(className);
 			if (!element.className.split(' ').includes(className))
 				answer = false;
 		});
@@ -51,8 +53,21 @@ class MLF {
 		return answer;
 	}
 
+	setText(text) {
+		Array.prototype.forEach.call(this._dom, element => {
+			element.textContent = text;
+		});
+
+		return this;
+	}
+
 	css(changes) {
-		
+		Array.prototype.forEach.call(this._dom, element => {
+			Object.keys(changes).forEach(key => {
+				element.style[key] = changes[key];
+			});
+		});
+
 		return this;
 	}
 }
@@ -69,7 +84,7 @@ const all = (selector) => new MLF(document.querySelectorAll(selector), true);
 
 
 const mlfEl = first('.testClassName').addClass('someClass');
-console.log(mlfEl.dom);
+console.dir(mlfEl.dom);
 
 
 mlfEl.removeClass('testClassName').addClass('oneMoreClass');
@@ -77,7 +92,15 @@ console.log(mlfEl.dom);
 
 console.log(mlfEl.hasClass('meClass'));
 
-const another = all('.multipleElements');
-another.toggleClass('superClass');
-console.log(another.dom);
+mlfEl.setText('some text');
 
+mlfEl.css({
+	background: 'yellow',
+	height: '100px'
+});
+
+const anotherEl = all('.multipleElements');
+anotherEl.toggleClass('superClass');
+console.log(anotherEl.dom);
+
+anotherEl.setText('another text');
