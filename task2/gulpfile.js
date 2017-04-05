@@ -24,4 +24,4 @@ gulp.task('testwatch', function (done) {
   }, done).start();
 });
 
-gulp.task('default', ['lint', 'testwatch']);
+gulp.task('default', ['lint', 'test']);

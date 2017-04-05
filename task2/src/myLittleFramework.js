@@ -26,8 +26,8 @@ class MLF {
    * @param {[string]} className [class to add]
    */
   addClass(className) {
-    Array.prototype.forEach.call(this._dom, element => {
-      element.className += ' ' + className;
+    Array.prototype.forEach.call(this._dom, (element) => {
+      element.className += ` ${className}`;
     });
 
     return this;
@@ -38,7 +38,7 @@ class MLF {
    * @param  {[string]} className [class to remove]
    */
   removeClass(className) {
-    Array.prototype.forEach.call(this._dom, element => {
+    Array.prototype.forEach.call(this._dom, (element) => {
       const elementClasses = element.className.split(' ');
 
       elementClasses.splice(elementClasses.indexOf(className), 1);
@@ -53,10 +53,11 @@ class MLF {
    * @param  {[type]} className [description]
    */
   toggleClass(className) {
-    if (this.hasClass(className))
-      this.removeClass(className)
-    else
+    if (this.hasClass(className)) {
+      this.removeClass(className);
+    } else {
       this.addClass(className);
+    }
 
     return this;
   }
@@ -69,9 +70,10 @@ class MLF {
   hasClass(className) {
     let answer = true;
 
-    Array.prototype.forEach.call(this._dom, element => {
-      if (!element.className.split(' ').includes(className))
+    Array.prototype.forEach.call(this._dom, (element) => {
+      if (!element.className.split(' ').includes(className)) {
         answer = false;
+      }
     });
 
     return answer;
@@ -82,7 +84,7 @@ class MLF {
    * @param {[string]} text [text to set]
    */
   setText(text) {
-    Array.prototype.forEach.call(this._dom, element => {
+    Array.prototype.forEach.call(this._dom, (element) => {
       element.textContent = text;
     });
 
@@ -94,8 +96,8 @@ class MLF {
    * @param  {[object]} changes [css styles object]
    */
   css(changes) {
-    Array.prototype.forEach.call(this._dom, element => {
-      Object.keys(changes).forEach(key => {
+    Array.prototype.forEach.call(this._dom, (element) => {
+      Object.keys(changes).forEach((key) => {
         element.style[key] = changes[key];
       });
     });
@@ -109,8 +111,8 @@ class MLF {
    * @param {[function]} func     [function to set]
    */
   addListener(event, func) {
-    Array.prototype.forEach.call(this._dom, element => {
-      element[listener] = func;
+    Array.prototype.forEach.call(this._dom, (element) => {
+      element[event] = func;
     });
 
     return this;
@@ -118,7 +120,7 @@ class MLF {
 }
 
 // returns first element with given selector
-const first = (selector) => new MLF(document.querySelector(selector));
+const first = selector => new MLF(document.querySelector(selector));
 
 // returns all elements with given selectors
-const all = (selector) => new MLF(document.querySelectorAll(selector));
+const all = selector => new MLF(document.querySelectorAll(selector));
